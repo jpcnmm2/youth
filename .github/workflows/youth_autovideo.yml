@@ -1,0 +1,59 @@
+name: 中青观看视频
+ 
+on:
+  workflow_dispatch:
+  schedule:
+     - cron: '15 22,1,4 * * *'
+  watch:
+    types: started
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    env:
+        YOUTH_VIDEO: ${{ secrets.YOUTH_VIDEO }}
+        YOUTH_VIDEO2: ${{ secrets.YOUTH_VIDEO2 }}
+        YOUTH_VIDEO3: ${{ secrets.YOUTH_VIDEO3 }}
+        YOUTH_VIDEO4: ${{ secrets.YOUTH_VIDEO4 }}
+        PUSH_KEY: ${{ secrets.PUSH_KEY || github.event.client_payload.PUSH_KEY }}
+        BARK_PUSH: ${{ secrets.BARK_PUSH || github.event.client_payload.BARK_PUSH }}
+        BARK_SOUND: ${{ secrets.BARK_SOUND || github.event.client_payload.BARK_SOUND }}
+        TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN || github.event.client_payload.TG_BOT_TOKEN }}
+        TG_USER_ID: ${{ secrets.TG_USER_ID || github.event.client_payload.TG_USER_ID }}
+        DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN || github.event.client_payload.DD_BOT_TOKEN }}
+        DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET || github.event.client_payload.DD_BOT_SECRET }}
+        IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY || github.event.client_payload.IGOT_PUSH_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: npm install
+        run: |
+          npm install
+      - name: 运行 【中青视频1-1】
+        if: env.YOUTH_VIDEO
+        run: |
+          node Youth_Read.js
+        env:
+          YOUTH_READ: ${{ secrets.YOUTH_VIDEO }}
+      - name: 运行 【中青视频1-2】
+        if: env.YOUTH_VIDEO2
+        run: |
+          node Youth_Read.js
+        env:
+          YOUTH_READ: ${{ secrets.YOUTH_VIDEO2 }}          
+      - name: 运行 【中青视频2-1】
+        if: env.YOUTH_VIDEO3
+        run: |
+          node Youth_Read.js
+        env:
+          YOUTH_READ: ${{ secrets.YOUTH_VIDEO3 }}
+      - name: 运行 【中青视频2-2】
+        if: env.YOUTH_VIDEO4
+        run: |
+          node Youth_Read.js
+        env:
+          YOUTH_READ: ${{ secrets.YOUTH_VIDEO4 }}          
