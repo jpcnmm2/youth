@@ -3,7 +3,7 @@ name: 中青观看视频
 on:
   workflow_dispatch:
   schedule:
-     - cron: '15 22,2,4 * * *'
+     - cron: '15 22,1,4 * * *'
   watch:
     types: started
 jobs:
